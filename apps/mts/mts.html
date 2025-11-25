@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTS - 准静态试验机操作软件</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #e4edf9);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+        }
+
+        .app-header {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            gap: 30px;
+        }
+
+        .app-icon {
+            width: 150px;
+            height: 150px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+
+        .app-icon i {
+            font-size: 80px;
+            color: white;
+        }
+
+        .app-info {
+            flex: 1;
+        }
+
+        .app-name {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .app-description {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: #3498db;
+        }
+
+        .feature-card i {
+            font-size: 2.5em;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .instructions {
+            line-height: 1.8;
+            font-size: 1.1em;
+            color: #444;
+        }
+
+        .instructions h3 {
+            color: #2c3e50;
+            margin: 25px 0 15px;
+        }
+
+        .instructions ul {
+            padding-left: 30px;
+            margin: 20px 0;
+        }
+
+        .instructions li {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .instructions li::before {
+            content: "•";
+            color: #3498db;
+            font-weight: bold;
+            position: absolute;
+            left: -20px;
+        }
+
+        .specifications {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .specifications th {
+            background: #3498db;
+            color: white;
+            text-align: left;
+            padding: 15px;
+        }
+
+        .specifications td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .specifications tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .specifications tr:hover {
+            background: #e3f2fd;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #2c3e50;
+            font-size: 1.1em;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .app-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .app-name {
+                font-size: 2em;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-header">
+             <div class="app-icon" style="background: transparent; border: 2px solid rgba(100, 181, 246, 0.2);">
+                <img src="logo.png" style="width: 80px; height: 80px; object-fit: contain;"
+                    onerror="this.parentElement.innerHTML='<i class=\'fas fa-brain\'></i>'">
+            </div>
+            <div class="app-info">
+                <h1 class="app-name">MTS</h1>
+                <p class="app-description">MTS是一款专为准静态试验机设计的专业操作软件，提供精确的控制、数据采集和分析功能，广泛应用于材料测试、产品质量检测等领域。</p>
+                <button class="download-btn">
+                    <i class="fas fa-download"></i>
+                    立即下载
+                </button>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h2 class="section-title">软件特性</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <h3>精确控制</h3>
+                    <p>提供高精度的试验机控制功能，支持力、位移、变形等多种控制模式，确保试验过程的准确性和重复性。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-database"></i>
+                    <h3>数据采集</h3>
+                    <p>实时采集试验过程中的各项数据，支持高速采样率，确保数据的完整性和可靠性。</p>
+                </div>
+                <!-- <div class="feature-card">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>数据分析</h3>
+                    <p>内置强大的数据分析工具，支持多种图表展示和统计分析功能，帮助用户深入理解试验结果。</p>
+                </div> -->
+                <!-- <div class="feature-card">
+                    <i class="fas fa-cogs"></i>
+                    <h3>自动化测试</h3>
+                    <p>支持编写自动化测试脚本，可实现复杂试验流程的自动执行，提高工作效率。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-file-export"></i>
+                    <h3>报告生成</h3>
+                    <p>自动生成标准化试验报告，支持多种格式导出，满足不同用户的需求。</p>
+                </div>-->
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>安全可靠</h3>
+                    <p>具备完善的安全保护机制，确保试验过程和设备的安全，防止意外发生。</p>
+                </div> 
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h2 class="section-title">技术规格</h2>
+            <table class="specifications">
+                <tr>
+                    <th>项目</th>
+                    <th>规格</th>
+                </tr>
+                <tr>
+                    <td>支持设备</td>
+                    <td>MTS系列准静态试验机</td>
+                </tr>
+                <tr>
+                    <td>控制模式</td>
+                    <td>力控制、位移控制、变形控制</td>
+                </tr>
+                <tr>
+                    <td>采样频率</td>
+                    <td>最高1000Hz</td>
+                </tr>
+                <tr>
+                    <td>数据格式</td>
+                    <td>CSV, Excel</td>
+                </tr>
+                <tr>
+                    <td>操作系统</td>
+                    <td>Windows 10/11 (64位)</td>
+                </tr>
+                <tr>
+                    <td>内存要求</td>
+                    <td>8GB RAM (推荐16GB)</td>
+                </tr>
+                <tr>
+                    <td>存储空间</td>
+                    <td>至少2GB可用空间</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="content-section">
+            <h2 class="section-title">使用说明</h2>
+            <div class="instructions">
+                <p>MTS软件为准静态试验机提供了完整的控制和数据处理解决方案，以下是基本使用指南：</p>
+                
+                <h3>安装步骤</h3>
+                <ul>
+                    <li>下载软件安装包并解压</li>
+                    <li>运行安装程序，按照提示完成安装</li>
+                    <li>连接试验机设备并启动软件</li>
+                    <li>首次使用需进行设备校准和参数设置</li>
+                </ul>
+                
+                <h3>基本操作流程</h3>
+                <ul>
+                    <li>启动软件并连接设备</li>
+                    <li>创建新的试验项目，设置试验参数</li>
+                    <li>安装试样并检查设备状态</li>
+                    <li>开始试验，实时监控试验过程</li>
+                    <li>试验结束后保存数据并生成报告</li>
+                </ul>
+                
+                <h3>注意事项</h3>
+                <ul>
+                    <li>使用前请仔细阅读用户手册</li>
+                    <li>定期校准设备以确保测试精度</li>
+                    <li>试验过程中请勿随意更改参数</li>
+                    <li>如遇异常情况请立即停止试验</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 MTS - 准静态试验机操作软件 | 专业材料测试解决方案</p>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.download-btn').addEventListener('click', function() {
+            alert('下载功能将在后续版本中实现，敬请期待！');
+        });
+    </script>
+</body>
+</html>

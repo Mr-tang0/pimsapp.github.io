@@ -10,11 +10,12 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb, #90caf9);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
-            color: #fff;
+            color: #333;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         @keyframes gradientBG {
@@ -24,16 +25,35 @@
         }
 
         .header {
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
+            background-color: rgba(255, 255, 255, 0.85);
+            color: #1976d2;
             text-align: center;
             padding: 30px 0;
             font-size: 2.5em;
             font-weight: bold;
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(25, 118, 210, 0.2);
             position: relative;
             overflow: hidden;
+            border-bottom: 2px solid #bbdefb;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(33, 150, 243, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(33, 150, 243, 0.1) 0%, transparent 20%);
+            z-index: 0;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
         }
 
         .header::after {
@@ -43,8 +63,9 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(25, 118, 210, 0.1), transparent);
             animation: shine 3s infinite;
+            z-index: 1;
         }
 
         @keyframes shine {
@@ -60,6 +81,21 @@
             padding: 50px 40px;
             max-width: 1400px;
             margin: 0 auto;
+            position: relative;
+        }
+
+        .apps-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(33, 150, 243, 0.05) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(33, 150, 243, 0.05) 0%, transparent 30%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         .app-item {
@@ -67,6 +103,30 @@
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             perspective: 1000px;
+            position: relative;
+        }
+
+        .app-item::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid transparent;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #64b5f6, #1976d2) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .app-item:hover::before {
+            opacity: 1;
         }
 
         .app-item:hover {
@@ -82,11 +142,12 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(25, 118, 210, 0.2);
             position: relative;
             overflow: hidden;
             transition: all 0.4s ease;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #64b5f6 0%, #1976d2 100%);
+            border: 3px solid rgba(255, 255, 255, 0.5);
         }
 
         .app-icon::before {
@@ -106,11 +167,24 @@
             opacity: 1;
         }
 
+        .app-icon::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 17px;
+            pointer-events: none;
+        }
+
         .app-icon i, .app-icon img {
             font-size: 60px;
             color: white;
             z-index: 2;
             transition: transform 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
         }
 
         .app-item:hover .app-icon i, 
@@ -121,32 +195,70 @@
         .app-name {
             font-size: 18px;
             font-weight: 600;
-            color: #fff;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            color: #1976d2;
+            text-shadow: 0 1px 2px rgba(25, 118, 210, 0.2);
             padding: 10px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.7);
             border-radius: 10px;
             backdrop-filter: blur(5px);
+            box-shadow: 0 4px 10px rgba(25, 118, 210, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .app-item:hover .app-name {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 6px 15px rgba(25, 118, 210, 0.2);
+            transform: translateY(-3px);
         }
 
         .footer {
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #fff;
+            background-color: rgba(255, 255, 255, 0.85);
+            color: #1976d2;
             text-align: center;
             padding: 30px 20px;
             margin-top: 50px;
             backdrop-filter: blur(10px);
+            border-top: 2px solid #bbdefb;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 40%, rgba(33, 150, 243, 0.05) 0%, transparent 30%),
+                radial-gradient(circle at 70% 60%, rgba(33, 150, 243, 0.05) 0%, transparent 30%);
         }
 
         .author-section {
             max-width: 800px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .author-title {
             font-size: 24px;
             margin-bottom: 20px;
-            color: #64b5f6;
+            color: #1976d2;
+            position: relative;
+            display: inline-block;
+        }
+
+        .author-title::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #64b5f6, #1976d2);
+            border-radius: 2px;
         }
 
         .author-info {
@@ -155,18 +267,39 @@
             justify-content: center;
             gap: 20px;
             flex-wrap: wrap;
+            margin-top: 20px;
         }
 
         .author-avatar {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background: linear-gradient(45deg, #2196F3, #21CBF3);
+            background: linear-gradient(45deg, #64b5f6, #1976d2);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 40px;
-            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+            box-shadow: 0 5px 15px rgba(25, 118, 210, 0.3);
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+
+        .author-avatar::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: shineAvatar 3s infinite;
+        }
+
+        @keyframes shineAvatar {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .author-details {
@@ -178,12 +311,14 @@
             font-size: 22px;
             font-weight: bold;
             margin-bottom: 10px;
+            color: #1976d2;
         }
 
         .author-description {
             font-size: 16px;
             line-height: 1.6;
             opacity: 0.9;
+            color: #333;
         }
 
         .social-links {
@@ -191,15 +326,67 @@
         }
 
         .social-links a {
-            color: #64b5f6;
+            color: #1976d2;
             margin: 0 10px;
             font-size: 20px;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(100, 181, 246, 0.2);
         }
 
         .social-links a:hover {
-            transform: translateY(-3px);
-            color: #bb86fc;
+            transform: translateY(-5px) scale(1.1);
+            color: #fff;
+            background: #1976d2;
+            box-shadow: 0 5px 15px rgba(25, 118, 210, 0.4);
+        }
+
+        /* 波浪装饰 */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" fill="%23bbdefb"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"/></svg>');
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: -1;
+        }
+
+        .header .wave {
+            top: auto;
+            bottom: -1px;
+            transform: scaleY(-1);
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(100, 181, 246, 0.1);
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, 20px) rotate(90deg); }
+            50% { transform: translate(0, 40px) rotate(180deg); }
+            75% { transform: translate(-20px, 20px) rotate(270deg); }
         }
 
         @media (max-width: 768px) {
@@ -237,53 +424,26 @@
     </style>
 </head>
 <body>
+    <div class="floating-elements" id="floatingElements"></div>
+    
     <div class="header">
-        PIMS APP SITE
+        <div class="header-content">
+            PIMS APP SITE
+        </div>
+        <div class="wave"></div>
     </div>
     
     <div class="apps-container">
         <!-- 应用图标 -->
-        <div class="app-item" onclick="navigateTo('ALLOP')">
-            <div class="app-icon" style="background: linear-gradient(135deg, #3498db, #2980b9);">
-                <img src="res/apps/allop/logo.ico" alt="ALLOP" onerror="this.parentElement.innerHTML='<i class=\'fas fa-brain\'></i>'">
+         <!-- <div class="app-item" onclick="navigateTo('ALLOP')">
+            <div class="app-icon" style="background: transparent; border: 2px solid rgba(100, 181, 246, 0.2);">
+                <img src="apps/allop/logo.ico" alt="ALLOP" 
+                    style="width: 80px; height: 80px; object-fit: contain;"
+                    onerror="this.parentElement.innerHTML='<i class=\'fas fa-brain\'></i>'">
             </div>
             <div class="app-name">ALLOP</div>
-        </div>
+        </div> -->
         
-        <div class="app-item" onclick="navigateTo('MTS')">
-            <div class="app-icon" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
-                <img src="res/apps/mts/logo.ico" alt="MTS" onerror="this.parentElement.innerHTML='<i class=\'fas fa-chart-line\'></i>'">
-            </div>
-            <div class="app-name">MTS</div>
-        </div>
-        
-        <div class="app-item" onclick="navigateTo('MMTS')">
-            <div class="app-icon" style="background: linear-gradient(135deg, #1abc9c, #16a085);">
-                <img src="res/apps/mmts/logo.ico" alt="MMTS" onerror="this.parentElement.innerHTML='<i class=\'fas fa-cogs\'></i>'">
-            </div>
-            <div class="app-name">MMTS</div>
-        </div>
-        
-        <div class="app-item" onclick="navigateTo('HOPKINSON_DECODER')">
-            <div class="app-icon" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
-                <img src="res/apps/hopkinson_decoder/logo.ico" alt="HOPKINSON DECODER" onerror="this.parentElement.innerHTML='<i class=\'fas fa-lock-open\'></i>'">
-            </div>
-            <div class="app-name">HOPKINSON DECODER</div>
-        </div>
-        
-        <div class="app-item" onclick="navigateTo('MINIMTS')">
-            <div class="app-icon" style="background: linear-gradient(135deg, #f39c12, #d35400);">
-                <img src="res/apps/minimts/logo.ico" alt="MINIMTS" onerror="this.parentElement.innerHTML='<i class=\'fas fa-compress\'></i>'">
-            </div>
-            <div class="app-name">MINIMTS</div>
-        </div>
-        
-        <div class="app-item" onclick="navigateTo('HIGHTEMP')">
-            <div class="app-icon" style="background: linear-gradient(135deg, #7f8c8d, #95a5a6);">
-                <img src="res/apps/hightemp/logo.ico" alt="HIGHTEMP" onerror="this.parentElement.innerHTML='<i class=\'fas fa-thermometer-half\'></i>'">
-            </div>
-            <div class="app-name">HIGHTEMP</div>
-        </div>
     </div>
 
     <div class="footer">
@@ -296,7 +456,7 @@
                 <div class="author-details">
                     <div class="author-name">Mr. Tang</div>
                     <div class="author-description">
-                        资深软件工程师，专注于Web应用开发和用户体验设计。致力于创造高效、美观且实用的应用程序，为用户提供卓越的数字体验。
+                        我的介绍
                     </div>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-github"></i></a>
@@ -310,14 +470,94 @@
     </div>
 
     <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const appsContainer = document.querySelector('.apps-container');
+        
+            appsContainer.appendChild(addAppIcon('ALLOP', null, '集成多个实验工具的综合性实验平台。'));
+            appsContainer.appendChild(addAppIcon('MTS'));
+            appsContainer.appendChild(addAppIcon('MMTS'));
+            appsContainer.appendChild(addAppIcon('HOPKINSON'));
+            appsContainer.appendChild(addAppIcon('MINIMTS'));
+            appsContainer.appendChild(addAppIcon('HIGHTEMP'));
+            
+            // 创建浮动元素
+            createFloatingElements();
+        });
+
+        function addAppIcon(appName, logoPath = null, detail = null) {
+            // 处理特殊应用名称
+            let fileName = appName.toLowerCase();
+
+            // 构建logo路径
+            const defaultLogoPath = logoPath ||`apps/${fileName}/logo.png`;
+            const finalLogoPath = logoPath || defaultLogoPath;
+
+            
+            // 确定使用的图标
+            const appIcon = 'fas fa-cube';
+            
+            // 创建HTML元素
+            const appItem = document.createElement('div');
+            appItem.className = 'app-item';
+            appItem.onclick = () => navigateTo(appName);
+            
+            const appIconDiv = document.createElement('div');
+            appIconDiv.className = 'app-icon';
+            appIconDiv.style.background = 'transparent';
+            appIconDiv.style.border = '2px solid rgba(100, 181, 246, 0.2)';
+            
+            if (finalLogoPath && (finalLogoPath.endsWith('.png') || finalLogoPath.endsWith('.ico') || finalLogoPath.endsWith('.jpg') || finalLogoPath.endsWith('.svg'))) {
+                // 使用图片
+                const img = document.createElement('img');
+                img.src = finalLogoPath;
+                img.alt = appName;
+                img.style.width = '80px';
+                img.style.height = '80px';
+                img.style.objectFit = 'contain';
+                img.onerror = function() {
+                    this.parentElement.innerHTML = `<i class='${appIcon}'></i>`;
+                };
+                appIconDiv.appendChild(img);
+            } else {
+                // 使用字体图标
+                const icon = document.createElement('i');
+                icon.className = appIcon;
+                appIconDiv.appendChild(icon);
+            }
+            
+            const appNameDiv = document.createElement('div');
+            appNameDiv.className = 'app-name';
+            appNameDiv.textContent = appName;
+            
+            // 创建详情小框
+            const appDetailDiv = document.createElement('div');
+            appDetailDiv.className = 'app-detail';
+            appDetailDiv.textContent = detail || '点击查看详情';
+            appDetailDiv.style.fontSize = '12px';
+            appDetailDiv.style.color = '#64b5f6';
+            appDetailDiv.style.marginTop = '5px';
+            appDetailDiv.style.padding = '5px 10px';
+            appDetailDiv.style.background = 'rgba(100, 181, 246, 0.1)';
+            appDetailDiv.style.borderRadius = '8px';
+            appDetailDiv.style.backdropFilter = 'blur(5px)';
+            appDetailDiv.style.border = '1px solid rgba(100, 181, 246, 0.2)';
+            appDetailDiv.style.opacity = '0.8';
+            
+            appItem.appendChild(appIconDiv);
+            appItem.appendChild(appNameDiv);
+            // 添加详情小框到应用项中
+            appItem.appendChild(appDetailDiv);
+            
+            return appItem;
+        }
+
         function navigateTo(appName) {
             // 处理特殊名称
             let fileName = appName.toLowerCase();
-            if (appName === 'HOPKINSON DECODER') {
-                fileName = 'hopkinson_decoder';
-            }
             
             window.location.href = 'apps/' + fileName + '/' + fileName + '.html';
+
         }
 
         // 添加悬停效果增强
@@ -330,6 +570,31 @@
                 this.style.zIndex = '1';
             });
         });
+
+        // 创建浮动元素
+        function createFloatingElements() {
+            const container = document.getElementById('floatingElements');
+            const colors = ['rgba(100, 181, 246, 0.1)', 'rgba(25, 118, 210, 0.1)', 'rgba(33, 150, 243, 0.1)'];
+            
+            for (let i = 0; i < 15; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                
+                const size = Math.random() * 100 + 20;
+                element.style.width = `${size}px`;
+                element.style.height = `${size}px`;
+                element.style.background = colors[Math.floor(Math.random() * colors.length)];
+                element.style.left = `${Math.random() * 100}%`;
+                element.style.top = `${Math.random() * 100}%`;
+                element.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                element.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(element);
+            }
+        }
+
+        // 页面加载完成后创建浮动元素
+        document.addEventListener('DOMContentLoaded', createFloatingElements);
     </script>
 </body>
 </html>
