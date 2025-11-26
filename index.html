@@ -74,6 +74,66 @@
             100% { left: 100%; }
         }
 
+        .search-container {
+            text-align: center;
+            padding: 20px 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid #bbdefb;
+            border-radius: 30px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(25, 118, 210, 0.1);
+        }
+
+        #searchInput:focus {
+            border-color: #64b5f6;
+            box-shadow: 0 4px 20px rgba(25, 118, 210, 0.3);
+        }
+
+        #searchButton {
+            position: absolute;
+            right: 5px;
+            background: #1976d2;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #searchButton:hover {
+            background: #0d47a1;
+            transform: scale(1.1);
+        }
+
+        .no-results {
+            text-align: center;
+            color: #1976d2;
+            font-size: 18px;
+            padding: 40px;
+            grid-column: 1 / -1;
+        }
+
         .apps-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -432,6 +492,13 @@
         </div>
         <div class="wave"></div>
     </div>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜索应用..." />
+            <button id="searchButton"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
     
     <div class="apps-container">
         <!-- 应用图标 -->
@@ -474,20 +541,70 @@
         document.addEventListener('DOMContentLoaded', function() {
             const appsContainer = document.querySelector('.apps-container');
         
-            appsContainer.appendChild(addAppIcon('ALLOP', null, '集成多个实验工具的综合性实验平台。'));
+            appsContainer.appendChild(addAppIcon('ALLOP', null, null,  '集成多个实验工具的综合性实验平台。'));
             appsContainer.appendChild(addAppIcon('MTS'));
             appsContainer.appendChild(addAppIcon('MMTS'));
             appsContainer.appendChild(addAppIcon('HOPKINSON'));
             appsContainer.appendChild(addAppIcon('MINIMTS'));
             appsContainer.appendChild(addAppIcon('HIGHTEMP'));
-            
+            appsContainer.appendChild(addAppIcon('实验室一级气炮控制', 'gasgun', null, '用于控制实验室一级气炮的应用程序。'));
+            appsContainer.appendChild(addAppIcon('ACJMOTOR'));
+            appsContainer.appendChild(addAppIcon('PressMachine'));
+
             // 创建浮动元素
             createFloatingElements();
+
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            searchButton.addEventListener('click', performSearch);
         });
 
-        function addAppIcon(appName, logoPath = null, detail = null) {
+        function performSearch() {
+            let searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const appItems = document.querySelectorAll('.app-item');
+            let hasResults = false;
+            
+            appItems.forEach(item => {
+                const appName = item.querySelector('.app-name').textContent.toLowerCase();
+                if (appName.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // 显示无结果提示
+            const noResultsElement = document.querySelector('.no-results');
+            if (!hasResults) {
+                if (!noResultsElement) {
+                    const noResults = document.createElement('div');
+                    noResults.className = 'no-results';
+                    noResults.textContent = '未找到匹配的应用';
+                    document.querySelector('.apps-container').appendChild(noResults);
+                } else {
+                    noResultsElement.style.display = 'block';
+                }
+            } else {
+                if (noResultsElement) {
+                    noResultsElement.style.display = 'none';
+                }
+            }
+        }
+
+        function addAppIcon(appName, appNameEn = null,logoPath = null, detail = null) {
             // 处理特殊应用名称
             let fileName = appName.toLowerCase();
+            if (appNameEn != null){
+                fileName = appNameEn.toLowerCase();
+            }
 
             // 构建logo路径
             const defaultLogoPath = logoPath ||`apps/${fileName}/logo.png`;
@@ -500,7 +617,7 @@
             // 创建HTML元素
             const appItem = document.createElement('div');
             appItem.className = 'app-item';
-            appItem.onclick = () => navigateTo(appName);
+            appItem.onclick = () => navigateTo(fileName);
             
             const appIconDiv = document.createElement('div');
             appIconDiv.className = 'app-icon';
@@ -552,12 +669,23 @@
             return appItem;
         }
 
-        function navigateTo(appName) {
-            // 处理特殊名称
+        async function navigateTo(appName) {
             let fileName = appName.toLowerCase();
             
-            window.location.href = 'apps/' + fileName + '/' + fileName + '.html';
-
+            const url = 'apps/' + fileName + '/' + fileName + '.html';
+            
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                
+                if (response.ok) {
+                    window.location.href = url;
+                } else {
+                    console.warn(`Page not found: ${url}`);
+                    alert('页面未找到！');
+                }
+            } catch (error) {
+                console.error('Error checking page existence:', error);
+            }
         }
 
         // 添加悬停效果增强
@@ -593,8 +721,6 @@
             }
         }
 
-        // 页面加载完成后创建浮动元素
-        document.addEventListener('DOMContentLoaded', createFloatingElements);
     </script>
 </body>
 </html>
